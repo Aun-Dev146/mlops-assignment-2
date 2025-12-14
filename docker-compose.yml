@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mlops-training:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mlops-app:latest
+    container_name: mlops-training-container
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./dvc.lock:/app/dvc.lock
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python src/train.py
+    restart: "no"
+
+  mlops-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: mlops-api:latest
+    container_name: mlops-api-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - mlops-training
+    restart: unless-stopped
