@@ -1,0 +1,17 @@
+{
+    "train_accuracy": 1.0,
+    "test_accuracy": 1.0,
+    "training_samples": 24,
+    "test_samples": 6,
+    "features_used": [
+        "sepal_length",
+        "sepal_width",
+        "petal_length",
+        "petal_width"
+    ],
+    "classes": [
+        "setosa",
+        "versicolor",
+        "virginica"
+    ]
+}
